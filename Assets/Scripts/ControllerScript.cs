@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ControllerScript : MonoBehaviour
 {
@@ -15,7 +16,13 @@ public class ControllerScript : MonoBehaviour
     public GameObject housePrefab;
     private Vector3 houseInitialPosition;
     private bool placing;
-    
+
+    private bool attacked = false;
+    private bool attacking = false;
+    public GameObject attackingShip;
+    public GameObject attackingDialog;
+    public GameObject attackResultDialog;
+
     void Start(){
         rockOwned = 0;
         woodOwned = 0;
@@ -40,6 +47,29 @@ public class ControllerScript : MonoBehaviour
                 } else {
                     houseImage.position = houseInitialPosition;
                     placing = false;
+                }
+            }
+        }
+
+        if (woodOwned >= 5 & !attacked) {
+            attackingShip.gameObject.SetActive(true);
+            attackingDialog.gameObject.SetActive(true);
+            attacked = true;
+            attacking = true;
+        }
+        if (attacking & Input.GetMouseButton(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit))
+            {
+                if (hit.transform.gameObject.layer == 12)
+                {
+                    attackResultDialog.transform.GetChild(0).GetComponent<Text>().text = generateAttackOutcome();
+                    attackResultDialog.gameObject.SetActive(true);
+                    attackingDialog.gameObject.SetActive(false);
+                    attackingShip.gameObject.SetActive(false);
+
                 }
             }
         }
@@ -69,5 +99,17 @@ public class ControllerScript : MonoBehaviour
 
     public void placeBuilding(){
         placing = true;
+    }
+
+    private string generateAttackOutcome() {
+        int rockStolen = (int) UnityEngine.Random.Range(1.0F, (float) rockOwned);
+        int woodStolen = (int) UnityEngine.Random.Range(1.0F, (float) woodOwned);
+        int goldStolen = (int) UnityEngine.Random.Range(1.0F, (float) goldOwned);
+
+        rockOwned -= rockStolen;
+        woodOwned -= woodStolen;
+        goldOwned -= goldStolen;
+
+        return string.Format("Your village has been attacked by pirates! You lost {0} rock, {1} wood, {2} gold.", rockStolen, woodStolen, goldStolen);
     }
 }
