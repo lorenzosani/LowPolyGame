@@ -13,6 +13,7 @@ public class ControllerScript : MonoBehaviour
     private int woodOwned;
     private int goldOwned;
 
+    public GameObject buildingsParentObject;
     public GameObject buildingsMenu;
     private bool buildingsMenuOpen;
 
@@ -40,17 +41,36 @@ public class ControllerScript : MonoBehaviour
             if (Physics.Raycast(ray, out hit)){
                 if (hit.transform.gameObject.layer == 11){
                     houseImage.position = houseInitialPosition;
-                    Instantiate(housePrefab, hit.point, new Quaternion(0,270,0,1));
+                    GameObject building = (GameObject) Instantiate(housePrefab, hit.point, new Quaternion(0,270,0,1));
+                    building.transform.parent = buildingsParentObject.transform;
+                    building.AddComponent<MeshCollider>();
                     placing = false;
+                    woodOwned -= 4;
                 } else {
                     houseImage.position = houseInitialPosition;
                     placing = false;
                 }
             }
         }
-        rockValue.text = "= " + rockOwned.ToString ();
-        woodValue.text = "= " + woodOwned.ToString ();
-        goldValue.text = "= " + goldOwned.ToString ();
+        rockValue.text = rockOwned.ToString ();
+        woodValue.text = woodOwned.ToString ();
+        goldValue.text = goldOwned.ToString ();
+    }
+
+    public void showBuildingsMenu(){
+        if (buildingsMenuOpen) {
+            buildingsMenuOpen = false;
+            buildingsMenu.gameObject.SetActive(false);
+        } else {
+            buildingsMenuOpen = true;
+            buildingsMenu.gameObject.SetActive(true);
+        }
+    }
+
+    public void placeBuilding(){
+        if (woodOwned>=4){
+            placing = true;
+        }
     }
 
     public void AddRock(int n)
@@ -72,20 +92,15 @@ public class ControllerScript : MonoBehaviour
         goldValue.text = "= " + goldOwned.ToString ();
     }
 
-    public void showBuildingsMenu(){
-        if (buildingsMenuOpen) {
-            buildingsMenuOpen = false;
-            buildingsMenu.gameObject.SetActive(false);
-        } else {
-            buildingsMenuOpen = true;
-            buildingsMenu.gameObject.SetActive(true);
-        }
+    public int GetRock() {
+        return rockOwned;
     }
 
-    public void placeBuilding(){
-        if (woodOwned>=4){
-            placing = true;
-            woodOwned -= 4;
-        }
+    public int GetWood() {
+        return woodOwned;
+    }
+
+    public int GetGold() {
+        return goldOwned;
     }
 }
