@@ -75,21 +75,21 @@ public class ControllerScript : MonoBehaviour
 
     public void AddRock(int n)
     {
-        rockOwned = rockOwned + 1;
-        rockValue.text = "= " + rockOwned.ToString ();
+        rockOwned = rockOwned + n;
+        rockValue.text = rockOwned.ToString ();
 
     }
 
     public void AddWood(int n)
     {
-        woodOwned = woodOwned + 1;
-        woodValue.text = "= " + woodOwned.ToString ();
+        woodOwned = woodOwned + n;
+        woodValue.text = woodOwned.ToString ();
 
     }
 
     public void AddGold(int n){
-        goldOwned = goldOwned + 1;
-        goldValue.text = "= " + goldOwned.ToString ();
+        goldOwned = goldOwned + n;
+        goldValue.text = goldOwned.ToString ();
     }
 
     public int GetRock() {
