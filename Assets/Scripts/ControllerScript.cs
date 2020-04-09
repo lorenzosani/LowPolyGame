@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 public class ControllerScript : MonoBehaviour
 {
+    public GameObject messageDialog;
     public Text rockValue;
     public Text woodValue;
     public Text goldValue;
@@ -12,6 +13,10 @@ public class ControllerScript : MonoBehaviour
     private int rockOwned;
     private int woodOwned;
     private int goldOwned;
+
+    public int storageLimit = 20;
+    private int factories = 0;
+
 
     void Start(){
         rockOwned = 0;
@@ -54,5 +59,41 @@ public class ControllerScript : MonoBehaviour
 
     public int GetGold() {
         return goldOwned;
+    }
+
+    public int getStorageLeft() {
+        return storageLimit-goldOwned-rockOwned-woodOwned;
+    }
+
+    public void updateStorageSpace(int n) {
+        storageLimit += n;
+    }
+
+    public void newFactory(){
+        factories++;
+        if (factories==1){
+            int next = (int) Random.Range(0,60);
+            Invoke("produceResources", next);
+        }
+    }
+
+    private void produceResources(){
+        if (getStorageLeft()>0){
+            int resType = (int) Random.Range(0,3);
+            if (resType==0) { AddWood(1); }
+            else if (resType==1){ AddRock(1); }
+            else{ AddGold(1); }
+        }
+        int next = (int) Random.Range(0,100/factories);
+        Invoke("produceResources", next);
+    }
+
+    public void showDialog(string message){
+        messageDialog.transform.GetChild(0).GetComponent<UnityEngine.UI.Text>().text = message;
+        messageDialog.gameObject.SetActive(true);
+    }
+
+    public void closeDialog(){
+        messageDialog.gameObject.SetActive(false);
     }
 }

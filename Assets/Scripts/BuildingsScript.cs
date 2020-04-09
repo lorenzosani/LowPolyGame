@@ -29,11 +29,13 @@ public class BuildingsScript : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit)){
-                if (hit.transform.gameObject.layer == 11){
+                if (hit.transform.gameObject.layer == 11 && Input.mousePosition.y>=buildingsMenu.GetComponent<RectTransform>().rect.height){
                     buildingsImages[currentBuilding].position = buildingsInitialPosition[currentBuilding];
                     GameObject building = (GameObject) Instantiate(buildingsPrefabs[currentBuilding], hit.point, buildingsPrefabs[currentBuilding].transform.rotation);
                     building.transform.parent = buildingsParentObject.transform;
                     building.AddComponent<MeshCollider>();
+                    building.layer = 14;
+                    addBuildingFunctionality(currentBuilding);
                     placing = false;
                     // TODO: Remove used resources
                 } else {
@@ -58,5 +60,18 @@ public class BuildingsScript : MonoBehaviour
         // TODO: If has enough resources
         placing = true;
         currentBuilding = i;
+    }
+
+    private void addBuildingFunctionality(int buildingNumber){
+        switch(buildingNumber){
+            case 0: Debug.Log("New House added"); //House
+                break;
+            case 1: GetComponent<ControllerScript>().updateStorageSpace(20); //Storage
+                break;
+            case 2: GetComponent<ControllerScript>().newFactory(); //Factory
+                break;
+            default: Debug.Log("Building's functionality not recognized");
+                break;
+        }
     }
 }

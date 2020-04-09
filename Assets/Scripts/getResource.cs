@@ -5,23 +5,75 @@ using UnityEngine;
 public class getResource : MonoBehaviour
 {
     public GameObject controller;
+    public GameObject progressFrontPrefab;
+    public GameObject progressBackPrefab;
+    private GameObject progressFront;
+    private GameObject progressBack;
+
+    private System.DateTime epochStart = new System.DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc);
+    private bool collectingResource = false;
+    private float duration;
+    private float startTime;
+    private RaycastHit currentHit;
+    private int resourceValue;
+
 
     void Update(){
         if (Input.GetMouseButtonDown(0)){
             Ray ray = GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit)){
-                if (hit.transform.gameObject.layer == 8){
-                    controller.GetComponent<ControllerScript>().AddRock(1);
-                    Destroy(hit.transform.gameObject);
-                } else if (hit.transform.gameObject.layer == 10){
-                    controller.GetComponent<ControllerScript>().AddGold(1);
-                    Destroy(hit.transform.gameObject);
-                } else if (hit.transform.gameObject.layer == 9){
-                    controller.GetComponent<ControllerScript>().AddWood(1);
-                    Destroy(hit.transform.gameObject);
+                if (!collectingResource && (hit.transform.gameObject.layer == 8 || hit.transform.gameObject.layer == 9 || hit.transform.gameObject.layer == 10)) {
+                    resourceValue = (int) (hit.transform.gameObject.GetComponent<Collider>().bounds.size.z * 2.0);
+                    if(controller.GetComponent<ControllerScript>().getStorageLeft() >= resourceValue){
+                        startProgressBar(hit, resourceValue);
+                    } else {
+                        controller.GetComponent<ControllerScript>().showDialog("Your storage is full! Build a new Storage Building to hold more resources.");
+                    }
                 }
+            }
         }
     }
- }
+
+    private void FixedUpdate(){
+        if (collectingResource){
+            float passedTime = Time.time - startTime;
+        if(passedTime < duration){
+            Vector3 progress = progressFront.transform.localScale;
+            progress.x = 3.0f-(passedTime*3.0f/duration);
+            progressFront.transform.localScale = progress;
+        } else {
+            Destroy(progressFront);
+            Destroy(progressBack);
+            collectingResource = false;
+            addResource();
+        }
+        }
+    }
+    
+    private void startProgressBar(RaycastHit hit, int value){
+        currentHit = hit;
+        Vector3 progressPos = hit.point;
+        progressPos.y = 3.0f;
+
+        duration = value*10.0f;
+        startTime = Time.time;
+
+        progressBack = (GameObject) Instantiate(progressBackPrefab, progressPos, progressBackPrefab.transform.rotation);
+        progressFront = (GameObject) Instantiate(progressFrontPrefab, progressPos, progressFrontPrefab.transform.rotation);
+        collectingResource = true;
+    }
+
+    private void addResource(){
+        if (currentHit.transform.gameObject.layer == 8){                        
+            controller.GetComponent<ControllerScript>().AddRock(resourceValue);
+            Destroy(currentHit.transform.gameObject);
+        } else if (currentHit.transform.gameObject.layer == 10){
+            controller.GetComponent<ControllerScript>().AddGold(resourceValue);
+            Destroy(currentHit.transform.gameObject);
+        } else if (currentHit.transform.gameObject.layer == 9){
+            controller.GetComponent<ControllerScript>().AddWood(resourceValue);
+            Destroy(currentHit.transform.gameObject);
+        }
+    }
 }

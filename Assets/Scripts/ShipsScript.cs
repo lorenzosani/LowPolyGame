@@ -8,10 +8,9 @@ public class ShipsScript : MonoBehaviour
     public Vector3 attackingShipPosition;
     public GameObject attackingDialog;
     public GameObject attackChoiceDialog;
-    public GameObject attackResultDialog;
     public GameObject sea;
     public GameObject buildingsParentObject;
-    public float attackFrequencyInSeconds = 150.0f;
+    public float attackFrequencyInSeconds = 600.0f;
     private GameObject ship;
     private bool underAttack = false;
     private bool navigatingAway = false;
@@ -82,9 +81,8 @@ public class ShipsScript : MonoBehaviour
     }
 
     public void fightOrSurrender(string userChoice) {
-        attackResultDialog.transform.GetChild(0).GetComponent<UnityEngine.UI.Text>().text = generateAttackOutcome(userChoice);
         attackChoiceDialog.gameObject.SetActive(false);
-        attackResultDialog.gameObject.SetActive(true);
+        GetComponent<ControllerScript>().showDialog(generateAttackOutcome(userChoice));
         underAttack = false;
         moveShipAway();
     }
@@ -120,10 +118,6 @@ public class ShipsScript : MonoBehaviour
             return string.Format("Oh no! You lost the fight and the attacker plundered the village. They stole {0} rock, {1} wood, {2} gold and destroyed {3} buildings.", rockStolen, woodStolen, goldStolen, buildingsToDestroy);
         }
         return string.Format("You surrendered and lost {0} rock, {1} wood, {2} gold.", rockStolen, woodStolen, goldStolen);
-    }
-
-    public void closeResultDialog() {
-        attackResultDialog.gameObject.SetActive(false);
     }
 
     public void moveShipAway() {
