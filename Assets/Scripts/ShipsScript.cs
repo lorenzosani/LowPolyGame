@@ -109,13 +109,13 @@ public class ShipsScript : MonoBehaviour
             int buildingsNumber = buildingsParentObject.GetComponentsInChildren<Transform>().Length-1;
             int buildingsToDestroy = UnityEngine.Random.Range(0,3);
             if (buildingsToDestroy >= buildingsNumber || buildingsToDestroy == 0) {
-                return string.Format("Oh no! You lost the fight and the attacker plundered the village. They stole {0} rock, {1} wood, {2} gold but luckly they didn't destroy any building.", rockStolen, woodStolen, goldStolen);
+                return string.Format("Oh no! You lost the fight and the attacker stole {0} rock, {1} wood, {2} gold but luckly they didn't destroy any building.", rockStolen, woodStolen, goldStolen);
             }
             for (int i = 0; i<buildingsToDestroy; i++) {
                 int buildingNo = UnityEngine.Random.Range(0,buildingsNumber-i);
                 Destroy(buildingsParentObject.transform.GetChild(buildingNo).gameObject);
             }
-            return string.Format("Oh no! You lost the fight and the attacker plundered the village. They stole {0} rock, {1} wood, {2} gold and destroyed {3} buildings.", rockStolen, woodStolen, goldStolen, buildingsToDestroy);
+            return string.Format("Oh no! You lost the fight and the attacker stole {0} rock, {1} wood, {2} gold and destroyed {3} buildings.", rockStolen, woodStolen, goldStolen, buildingsToDestroy);
         }
         return string.Format("You surrendered and lost {0} rock, {1} wood, {2} gold.", rockStolen, woodStolen, goldStolen);
     }
