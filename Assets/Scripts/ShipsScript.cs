@@ -21,7 +21,7 @@ public class ShipsScript : MonoBehaviour
 
     void Start()
     {
-        float nextAttackTime = Random.Range(30, 30+attackFrequencyInSeconds*2);
+        float nextAttackTime = Random.Range(120, attackFrequencyInSeconds*2);
         Invoke("generateAttack", nextAttackTime);
     }
 
@@ -123,7 +123,7 @@ public class ShipsScript : MonoBehaviour
     public void moveShipAway() {
         navigatingAway = true;
 
-        float nextAttackTime = Random.Range(30, 30+attackFrequencyInSeconds*2);
+        float nextAttackTime = Random.Range(attackFrequencyInSeconds/2, attackFrequencyInSeconds*2);
         Invoke("generateAttack", nextAttackTime);
     }
 }
