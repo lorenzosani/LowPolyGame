@@ -103,8 +103,9 @@ GameObject:
   - component: {fileID: 5722438080232268759}
   - component: {fileID: 5636807062926779527}
   - component: {fileID: 5636807062926779520}
-  - component: {fileID: 5636807062926779521}
   - component: {fileID: 4673897945229746767}
+  - component: {fileID: 7643729327593269478}
+  - component: {fileID: 202997005902403683}
   m_Layer: 0
   m_Name: PT_Medieval_Female_Peasant_01_e 1
   m_TagString: Untagged
@@ -138,8 +139,8 @@ Animator:
   m_GameObject: {fileID: 5636858818391450439}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 5f29dd01165c45f4c8ea308511e01d0e, type: 3}
-  m_Controller: {fileID: 9100000, guid: 3244fa875fe4385468bc1782ada67391, type: 2}
-  m_CullingMode: 1
+  m_Controller: {fileID: 9100000, guid: e2cf68ff4b1ffda45a77f7307dd789b9, type: 2}
+  m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
@@ -174,29 +175,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.3
-  m_Height: 2
+  m_Height: 1.8
   m_Direction: 1
-  m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &5636807062926779521
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5636858818391450439}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7268b6bfb6526d267960616210e06e35, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_MovingTurnSpeed: 360
-  m_StationaryTurnSpeed: 180
-  m_JumpPower: 12
-  m_GravityMultiplier: 2
-  m_RunCycleLegOffset: 0.2
-  m_MoveSpeedMultiplier: 1
-  m_AnimSpeedMultiplier: 1
-  m_GroundCheckDistance: 0.1
+  m_Center: {x: 0, y: 0.8, z: 0}
 --- !u!195 &4673897945229746767
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -206,8 +187,8 @@ NavMeshAgent:
   m_GameObject: {fileID: 5636858818391450439}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 3.5
+  m_Radius: 0.3
+  m_Speed: 0.6
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -215,10 +196,45 @@ NavMeshAgent:
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 2
+  m_Height: 1.8
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &7643729327593269478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5636858818391450439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce7a80d520cacc042b5fe14f373d8173, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_MovingTurnSpeed: 360
+  m_StationaryTurnSpeed: 180
+  m_JumpPower: 6
+  m_GravityMultiplier: 2
+  m_RunCycleLegOffset: 0.2
+  m_MoveSpeedMultiplier: 1
+  m_AnimSpeedMultiplier: 1
+  m_GroundCheckDistance: 0.2
+--- !u!114 &202997005902403683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5636858818391450439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f760957546c4d5e628e81f67cb64c4df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wanderRadius: 100
+  wanderTimer: 20
+  character: {fileID: 7643729327593269478}
 --- !u!1 &5636862030703814911
 GameObject:
   m_ObjectHideFlags: 0
