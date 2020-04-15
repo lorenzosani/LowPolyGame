@@ -14,7 +14,8 @@ public class ControllerScript : MonoBehaviour
     private int woodOwned;
     private int goldOwned;
 
-    public int storageLimit = 20;
+    private int storageLimit = 20;
+    private int villageStrength = 2;
     private int factories = 0;
 
 
@@ -67,6 +68,10 @@ public class ControllerScript : MonoBehaviour
 
     public void updateStorageSpace(int n) {
         storageLimit += n;
+    }
+
+    public void updateVillageStrength(int n) {
+        villageStrength += n;
     }
 
     public void newFactory(){

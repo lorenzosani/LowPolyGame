@@ -64,7 +64,8 @@ public class BuildingsScript : MonoBehaviour
 
     private void addBuildingFunctionality(int buildingNumber){
         switch(buildingNumber){
-            case 0: Debug.Log("New House added"); //House
+            case 0: GetComponent<ControllerScript>().updateVillageStrength(2); //House
+                GetComponent<SpawnerScript>().spawnVillagers(2); 
                 break;
             case 1: GetComponent<ControllerScript>().updateStorageSpace(20); //Storage
                 break;

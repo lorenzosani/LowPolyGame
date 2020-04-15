@@ -7,6 +7,9 @@ public class SpawnerScript : MonoBehaviour
     public GameObject[] trees;
     public GameObject[] rocks;
     public GameObject[] goldStones;
+    public GameObject[] villagers;
+    public Transform villagersParentObject;
+    public Transform resourcesParentObject;
     public float spawnMostWait;
     public float spawnLeastWait;
     public int startWait;
@@ -30,6 +33,13 @@ public class SpawnerScript : MonoBehaviour
         }
     }
 
+    public void spawnVillagers(int amount){
+        for(int i=0; i<amount; i++){
+            GameObject villager = Instantiate(villagers[Random.Range(0, villagers.Length)], Vector3.zero, Quaternion.identity);
+            villager.transform.parent = villagersParentObject;
+        }
+    }
+
     IEnumerator waitSpawner()
     {
         yield return new WaitForSeconds(startWait);
@@ -49,6 +59,7 @@ public class SpawnerScript : MonoBehaviour
             Vector3 spawnPos = new Vector3(Random.Range(-26, 33), 0, Random.Range(-22, 30));
             GameObject newResource = Instantiate(resources[randResources], spawnPos + transform.TransformPoint(0, 0, 0), gameObject.transform.rotation);
             newResource.layer = resType;
+            newResource.transform.parent = resourcesParentObject;
             yield return new WaitForSeconds(spawnWait);
         }
     }
