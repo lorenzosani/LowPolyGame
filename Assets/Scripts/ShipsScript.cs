@@ -15,7 +15,6 @@ public class ShipsScript : MonoBehaviour
     private bool underAttack = false;
     private bool navigatingAway = false;
     private int attackerStrength;
-    private int villageStrength;
     private int shipSize;
     private int count = 0;
 
@@ -72,8 +71,8 @@ public class ShipsScript : MonoBehaviour
         ship.layer = 12;
 
         // Generate attacker strength
-        float randomCoeff = Random.Range(1.0f,2.0f);
-        attackerStrength = (int)((float) shipSize*randomCoeff);
+        float randomCoeff = Random.Range(1.0f,5.0f);
+        attackerStrength = (int)((float) (shipSize+1)*randomCoeff);
 
         // Warn player that the village is under attack
         attackingDialog.gameObject.SetActive(true);
@@ -88,11 +87,13 @@ public class ShipsScript : MonoBehaviour
     }
 
     private string generateAttackOutcome(string attackResponse) {
-        if (attackResponse == "fight" && villageStrength >= attackerStrength) {
-            //  Generate victory
-            int rockWon = UnityEngine.Random.Range(1, shipSize*15);
-            int woodWon = UnityEngine.Random.Range(1, shipSize*15);
-            int goldWon = UnityEngine.Random.Range(1, shipSize*15);
+        // Check if the village is stronger than the attacker
+        if (attackResponse == "fight" && GetComponent<ControllerScript>().getVillageStrength() >= attackerStrength) {
+            // Generate victory
+            int storageLeft = GetComponent<ControllerScript>().getStorageLeft();     
+            int rockWon = UnityEngine.Random.Range(0, storageLeft/2);
+            int woodWon = UnityEngine.Random.Range(0, storageLeft-rockWon);
+            int goldWon = UnityEngine.Random.Range(0, storageLeft-rockWon-woodWon);
             GetComponent<ControllerScript>().AddRock(rockWon);
             GetComponent<ControllerScript>().AddWood(woodWon);
             GetComponent<ControllerScript>().AddGold(goldWon);
@@ -107,7 +108,7 @@ public class ShipsScript : MonoBehaviour
         if (attackResponse == "fight"){
             // If you lose a fight some of the village might be destroyed
             int buildingsNumber = buildingsParentObject.GetComponentsInChildren<Transform>().Length-1;
-            int buildingsToDestroy = UnityEngine.Random.Range(0,3);
+            int buildingsToDestroy = UnityEngine.Random.Range(0,2);
             if (buildingsToDestroy >= buildingsNumber || buildingsToDestroy == 0) {
                 return string.Format("Oh no! You lost the fight and the attacker stole {0} rock, {1} wood, {2} gold but luckly they didn't destroy any building.", rockStolen, woodStolen, goldStolen);
             }

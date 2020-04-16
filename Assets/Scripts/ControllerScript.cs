@@ -6,15 +6,18 @@ using System.Collections.Generic;
 public class ControllerScript : MonoBehaviour
 {
     public GameObject messageDialog;
+    public GameObject messageText;
     public Text rockValue;
     public Text woodValue;
     public Text goldValue;
+    public Text villageStrengthValue;
+    public Text storageSpaceValue;
     
     private int rockOwned;
     private int woodOwned;
     private int goldOwned;
 
-    private int storageLimit = 20;
+    private int storageLimit = 40;
     private int villageStrength = 2;
     private int factories = 0;
 
@@ -26,9 +29,11 @@ public class ControllerScript : MonoBehaviour
     }
 
     void LateUpdate(){
-        rockValue.text = rockOwned.ToString ();
-        woodValue.text = woodOwned.ToString ();
-        goldValue.text = goldOwned.ToString ();
+        rockValue.text = rockOwned.ToString();
+        woodValue.text = woodOwned.ToString();
+        goldValue.text = goldOwned.ToString();
+        villageStrengthValue.text = villageStrength.ToString();
+        storageSpaceValue.text = storageLimit.ToString();
     }
 
     public void AddRock(int n)
@@ -62,12 +67,26 @@ public class ControllerScript : MonoBehaviour
         return goldOwned;
     }
 
+    public Vector3 GetResources() {
+        return new Vector3(rockOwned, woodOwned, goldOwned);
+    }
+
+    public void SetResources(Vector3 resources){
+        rockOwned = (int) resources.x;
+        woodOwned = (int) resources.y;
+        goldOwned = (int) resources.z;
+    }
+
     public int getStorageLeft() {
         return storageLimit-goldOwned-rockOwned-woodOwned;
     }
 
     public void updateStorageSpace(int n) {
         storageLimit += n;
+    }
+
+    public int getVillageStrength(){
+        return villageStrength;
     }
 
     public void updateVillageStrength(int n) {
@@ -94,7 +113,7 @@ public class ControllerScript : MonoBehaviour
     }
 
     public void showDialog(string message){
-        messageDialog.transform.GetChild(0).GetComponent<UnityEngine.UI.Text>().text = message;
+        messageText.GetComponent<UnityEngine.UI.Text>().text = message;
         messageDialog.gameObject.SetActive(true);
     }
 

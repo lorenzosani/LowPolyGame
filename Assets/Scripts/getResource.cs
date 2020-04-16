@@ -19,23 +19,31 @@ public class getResource : MonoBehaviour
 
 
     void Update(){
+        //If the user clicks on a resource it will be collected
         if (Input.GetMouseButtonDown(0)){
             Ray ray = GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit)){
+                //Only one resource at a time can be collected
                 if (!collectingResource && (hit.transform.gameObject.layer == 8 || hit.transform.gameObject.layer == 9 || hit.transform.gameObject.layer == 10)) {
+                    //The value of a resoruce is a function of its size
                     resourceValue = (int) (hit.transform.gameObject.GetComponent<Collider>().bounds.size.z * 2.0);
+                    //The resource will be collected only if there is enough storage space
                     if(controller.GetComponent<ControllerScript>().getStorageLeft() >= resourceValue){
                         startProgressBar(hit, resourceValue);
                     } else {
                         controller.GetComponent<ControllerScript>().showDialog("Your storage is full! Build a new Storage Building to hold more resources.");
                     }
                 }
+                else if(collectingResource && (hit.transform.gameObject.layer == 8 || hit.transform.gameObject.layer == 9 || hit.transform.gameObject.layer == 10)){
+                    controller.GetComponent<ControllerScript>().showDialog("Too busy! You can only gather one resource at a time");
+                }
             }
         }
     }
 
     private void FixedUpdate(){
+        //This controls the progress bar when a resource is being collected
         if (collectingResource){
             float passedTime = Time.time - startTime;
         if(passedTime < duration){
