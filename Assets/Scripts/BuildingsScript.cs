@@ -35,26 +35,33 @@ public class BuildingsScript : MonoBehaviour
                 if (hit.transform.gameObject.layer == 11 && Input.mousePosition.y>=buildingsMenu.GetComponent<RectTransform>().rect.height){
                     //Check if the user has enough resources
                     if(buyBuilding(currentBuilding)){
-                        buildingsImages[currentBuilding].position = buildingsInitialPosition[currentBuilding];
-                        GameObject building = (GameObject) Instantiate(buildingsPrefabs[currentBuilding], hit.point, buildingsPrefabs[currentBuilding].transform.rotation);
-                        building.transform.parent = buildingsParentObject.transform;
-                        building.AddComponent<MeshCollider>();
-                        building.layer = 14;
-                        addBuildingFunctionality(currentBuilding);
-                        placing = false;
+                        // If yes, a new building is instantiated
+                        newBuilding(currentBuilding, hit.point);
                     }else{
-                        buildingsImages[currentBuilding].position = buildingsInitialPosition[currentBuilding];
+                        // Otherwise, a message is shown to the user
                         placing = false;
                         GetComponent<ControllerScript>().showDialog("Oops! You don't have enough resources for this building");
                     }
                 } else {
-                    buildingsImages[currentBuilding].position = buildingsInitialPosition[currentBuilding];
                     placing = false;
                 }
+                buildingsImages[currentBuilding].position = buildingsInitialPosition[currentBuilding];
             }
         }
     }
 
+    // This instantiates a new building in the scene
+    public void newBuilding(int buildingId, Vector3 buildingPos){
+        GameObject building = (GameObject) Instantiate(buildingsPrefabs[buildingId], buildingPos, buildingsPrefabs[buildingId].transform.rotation);
+        building.transform.parent = buildingsParentObject.transform;
+        building.AddComponent<MeshCollider>();
+        building.layer = 14;
+        addBuildingFunctionality(buildingId);
+        GetComponent<ControllerScript>().AddNewBuilding(buildingId, buildingPos);
+        placing = false;
+    }
+
+    // This opens the list of buildings
     public void showBuildingsMenu(){
         if (buildingsMenuOpen) {
             buildingsMenuOpen = false;
@@ -65,6 +72,7 @@ public class BuildingsScript : MonoBehaviour
         }
     }
 
+    // This is called when a user wants to place a new building
     public void placeBuilding(int i){
         placing = true;
         currentBuilding = i;
@@ -82,6 +90,7 @@ public class BuildingsScript : MonoBehaviour
         return false;
     }
 
+    // Each building has its own role, this function enables that role
     private void addBuildingFunctionality(int buildingNumber){
         switch(buildingNumber){
             case 0: GetComponent<ControllerScript>().updateVillageStrength(2); //House

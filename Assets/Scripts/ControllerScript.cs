@@ -2,9 +2,12 @@
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 public class ControllerScript : MonoBehaviour
 {
+    public SettingsScript settings;
     public GameObject messageDialog;
     public GameObject messageText;
     public Text rockValue;
@@ -16,16 +19,23 @@ public class ControllerScript : MonoBehaviour
     private int rockOwned;
     private int woodOwned;
     private int goldOwned;
+    private string saveFileName = "/gamedata.fun";
 
-    private int storageLimit = 40;
-    private int villageStrength = 2;
-    private int factories = 0;
-
+    internal List<int> buildings = new List<int>();
+    internal List<Vector3> buildingsPosition  = new List<Vector3>();
+    internal int storageLimit = 40;
+    internal int villageStrength = 2;
+    internal int factories = 0;
 
     void Start(){
-        rockOwned = 0;
-        woodOwned = 0;
-        goldOwned = 0;
+        int load = PlayerPrefs.GetInt("LoadScene", 0);
+        if (load>0) {
+            LoadGame();
+        } else {
+            rockOwned = 0;
+            woodOwned = 0;
+            goldOwned = 0;
+        }
     }
 
     void LateUpdate(){
@@ -36,21 +46,53 @@ public class ControllerScript : MonoBehaviour
         storageSpaceValue.text = storageLimit.ToString();
     }
 
-    public void AddRock(int n)
-    {
+    // This serializes and saves the game to local storage
+    public void SaveGame(){
+        // This creates a binary file in the system
+        BinaryFormatter formatter = new BinaryFormatter();
+        string path = Application.persistentDataPath + saveFileName;
+        FileStream stream = new FileStream(path, FileMode.Create);
+
+        // This serializes the game data into the file
+        GameData data = new GameData(this.GetComponent<ControllerScript>());
+        formatter.Serialize(stream, data);
+        stream.Close();
+
+        settings.hideSettings();
+        showDialog("Your game is saved. We'll take care of it!");
+    }
+
+    // This loads a saved game from a binary file
+    public void LoadGame(){
+        string path = Application.persistentDataPath + saveFileName;
+
+        // It first checks if a saved game exists
+        if (File.Exists(path)){
+            BinaryFormatter formatter = new BinaryFormatter();
+            FileStream stream = new FileStream(path, FileMode.Open);
+
+            // If it exists, the game data is deserialized and loaded
+            GameData data = (GameData) formatter.Deserialize(stream);
+            stream.Close();
+            loadData(data);
+        } else {
+            showDialog("Error! No saved game can be found.");
+        }
+    }
+
+    public void AddRock(int n) {
         rockOwned = rockOwned + n;
         rockValue.text = rockOwned.ToString ();
 
     }
 
-    public void AddWood(int n)
-    {
+    public void AddWood(int n) {
         woodOwned = woodOwned + n;
         woodValue.text = woodOwned.ToString ();
 
     }
 
-    public void AddGold(int n){
+    public void AddGold(int n) {
         goldOwned = goldOwned + n;
         goldValue.text = goldOwned.ToString ();
     }
@@ -93,6 +135,11 @@ public class ControllerScript : MonoBehaviour
         villageStrength += n;
     }
 
+    public void AddNewBuilding(int buildingID, Vector3 pos){
+        buildings.Add(buildingID);
+        buildingsPosition.Add(pos);
+    }
+
     public void newFactory(){
         factories++;
         if (factories==1){
@@ -119,5 +166,20 @@ public class ControllerScript : MonoBehaviour
 
     public void closeDialog(){
         messageDialog.gameObject.SetActive(false);
+    }
+
+    // This loads saved data into the scene
+    public void loadData(GameData data){
+        villageStrength = data.villageStrength;
+        storageLimit = data.storageSpace;
+        AddRock(data.resourcesOwned[0]);
+        AddWood(data.resourcesOwned[1]);
+        AddGold(data.resourcesOwned[2]);
+        BuildingsScript bs = this.GetComponent<BuildingsScript>();
+        for(int i=0; i<data.buildingsType.Length; i++){
+            Vector3 pos = new Vector3(data.buildingsPosition[i,0], data.buildingsPosition[i,1], data.buildingsPosition[i,2]);
+            AddNewBuilding(data.buildingsType[i], pos);
+            bs.newBuilding(data.buildingsType[i], pos);
+        }
     }
 }
