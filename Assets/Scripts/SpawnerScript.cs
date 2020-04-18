@@ -35,7 +35,7 @@ public class SpawnerScript : MonoBehaviour
 
     public void spawnVillagers(int amount){
         for(int i=0; i<amount; i++){
-            GameObject villager = Instantiate(villagers[Random.Range(0, villagers.Length)], Vector3.zero, Quaternion.identity);
+            GameObject villager = Instantiate(villagers[Random.Range(0, villagers.Length)], new Vector3(-21.0f, 0.0f, 10.0f), Quaternion.identity);
             villager.transform.parent = villagersParentObject;
         }
     }

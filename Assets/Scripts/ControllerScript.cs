@@ -24,17 +24,20 @@ public class ControllerScript : MonoBehaviour
     internal List<int> buildings = new List<int>();
     internal List<Vector3> buildingsPosition  = new List<Vector3>();
     internal int storageLimit = 40;
-    internal int villageStrength = 2;
+    internal int villageStrength;
     internal int factories = 0;
 
     void Start(){
-        int load = PlayerPrefs.GetInt("LoadScene", 0);
-        if (load>0) {
+        if (PlayerPrefs.GetInt("LoadScene", 0)>0) {
+            // Called if the user wants to load a game
             LoadGame();
         } else {
+            // Called if the user starts a new game from scratch
             rockOwned = 0;
             woodOwned = 0;
             goldOwned = 0;
+            villageStrength = 0;
+            GetComponent<BuildingsScript>().newBuilding(0, new Vector3(-22.0f, 0.0f, 8.0f));
         }
     }
 
@@ -170,7 +173,6 @@ public class ControllerScript : MonoBehaviour
 
     // This loads saved data into the scene
     public void loadData(GameData data){
-        villageStrength = data.villageStrength;
         storageLimit = data.storageSpace;
         AddRock(data.resourcesOwned[0]);
         AddWood(data.resourcesOwned[1]);
