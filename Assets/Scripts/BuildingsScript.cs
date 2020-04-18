@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 public class BuildingsScript : MonoBehaviour
 {
+    public btnFX soundFx;
     public GameObject buildingsParentObject;
     public GameObject buildingsMenu;
     public Transform[] buildingsImages;
@@ -37,6 +38,7 @@ public class BuildingsScript : MonoBehaviour
                     if(buyBuilding(currentBuilding)){
                         // If yes, a new building is instantiated
                         newBuilding(currentBuilding, hit.point);
+                        soundFx.BuildingSound();
                     }else{
                         // Otherwise, a message is shown to the user
                         placing = false;

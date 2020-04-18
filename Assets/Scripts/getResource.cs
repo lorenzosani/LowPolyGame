@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class getResource : MonoBehaviour
 {
+    public btnFX soundFx;
     public GameObject controller;
     public GameObject progressFrontPrefab;
     public GameObject progressBackPrefab;
@@ -64,12 +65,13 @@ public class getResource : MonoBehaviour
         Vector3 progressPos = hit.point;
         progressPos.y = 3.0f;
 
-        duration = value*7.0f;
+        duration = value*5.0f;
         startTime = Time.time;
 
         progressBack = (GameObject) Instantiate(progressBackPrefab, progressPos, progressBackPrefab.transform.rotation);
         progressFront = (GameObject) Instantiate(progressFrontPrefab, progressPos, progressFrontPrefab.transform.rotation);
         collectingResource = true;
+        soundFx.ResourcesSound();
     }
 
     private void addResource(){

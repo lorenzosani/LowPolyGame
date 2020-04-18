@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ShipsScript : MonoBehaviour
 {       
+    public btnFX soundFx;
     public GameObject[] ships = new GameObject[3];
     public Vector3 attackingShipPosition;
     public GameObject attackingDialog;
@@ -76,6 +77,7 @@ public class ShipsScript : MonoBehaviour
 
         // Warn player that the village is under attack
         attackingDialog.gameObject.SetActive(true);
+        soundFx.AttackSound();
         underAttack = true;
     }
 
@@ -97,6 +99,7 @@ public class ShipsScript : MonoBehaviour
             GetComponent<ControllerScript>().AddRock(rockWon);
             GetComponent<ControllerScript>().AddWood(woodWon);
             GetComponent<ControllerScript>().AddGold(goldWon);
+            soundFx.VictorySound();
             return string.Format("Yeah! You won the fight and received {0} rock, {1} wood, {2} gold.", rockWon, woodWon, goldWon);
         }
         int rockStolen = UnityEngine.Random.Range(0, GetComponent<ControllerScript>().GetRock());
