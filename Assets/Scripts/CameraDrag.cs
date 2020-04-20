@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class CameraDrag : MonoBehaviour
 {
-    
     private Vector3 origin;
     private Vector3 delta;
     private bool dragging = false;
 
+    // This allows to move the view by dragging
     void LateUpdate() {
         if (Input.GetMouseButton(0)) {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);

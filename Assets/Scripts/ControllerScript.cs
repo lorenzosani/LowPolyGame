@@ -83,66 +83,78 @@ public class ControllerScript : MonoBehaviour
         }
     }
 
+    // Adds n rocks to those owned by the user
     public void AddRock(int n) {
         rockOwned = rockOwned + n;
         rockValue.text = rockOwned.ToString ();
-
     }
 
+    // Adds n wood to that owned by the user
     public void AddWood(int n) {
         woodOwned = woodOwned + n;
         woodValue.text = woodOwned.ToString ();
-
     }
 
+    // Adds n gold to that owned by the user
     public void AddGold(int n) {
         goldOwned = goldOwned + n;
         goldValue.text = goldOwned.ToString ();
     }
 
+    // Returns the number of rock owned by the user
     public int GetRock() {
         return rockOwned;
     }
 
+    // Returns the number of wood owned by the user
     public int GetWood() {
         return woodOwned;
     }
 
+    // Returns the number of gold owned by the user
     public int GetGold() {
         return goldOwned;
     }
 
+    // Returns the number of each resource owned by the user in a Vector3
     public Vector3 GetResources() {
         return new Vector3(rockOwned, woodOwned, goldOwned);
     }
 
+    // Set all the resources owned by the user by using a Vector3 of resources
     public void SetResources(Vector3 resources){
         rockOwned = (int) resources.x;
         woodOwned = (int) resources.y;
         goldOwned = (int) resources.z;
     }
 
+    // Returns how much storage space is left
     public int getStorageLeft() {
         return storageLimit-goldOwned-rockOwned-woodOwned;
     }
 
+    // Set how much storage space is left
     public void updateStorageSpace(int n) {
         storageLimit += n;
     }
 
+    // Returns the strength of the village
     public int getVillageStrength(){
         return villageStrength;
     }
 
+    // Set the strength of the village
     public void updateVillageStrength(int n) {
         villageStrength += n;
     }
 
+    // Adds a new building to the list of constructed buildings
     public void AddNewBuilding(int buildingID, Vector3 pos){
         buildings.Add(buildingID);
         buildingsPosition.Add(pos);
     }
 
+    // Adds 1 to the counter of the number of factories built
     public void newFactory(){
         factories++;
         if (factories==1){
@@ -151,6 +163,7 @@ public class ControllerScript : MonoBehaviour
         }
     }
 
+    // Allows a new factory to produce resources
     private void produceResources(){
         if (getStorageLeft()>0){
             int resType = (int) Random.Range(0,3);
@@ -162,11 +175,13 @@ public class ControllerScript : MonoBehaviour
         Invoke("produceResources", next);
     }
 
+    // This shows a standard message dialog, the message to be shown is passed as a parameter
     public void showDialog(string message){
         messageText.GetComponent<UnityEngine.UI.Text>().text = message;
         messageDialog.gameObject.SetActive(true);
     }
 
+    // This closes an open message dialog
     public void closeDialog(){
         messageDialog.gameObject.SetActive(false);
     }

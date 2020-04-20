@@ -10,6 +10,12 @@ public class MainMenu : MonoBehaviour
     public Slider slider;
     public Text progressText;
 
+    public GameObject splashScreen;
+
+    void Start(){
+        Invoke("hideSplash", 5.0f);
+    }
+
     // This jumps to the game scene
     public void PlayGame() {
         PlayerPrefs.SetInt("LoadScene", 0);
@@ -42,5 +48,9 @@ public class MainMenu : MonoBehaviour
 
             yield return null;
         }
+    }
+
+    void hideSplash(){
+        splashScreen.SetActive(false);
     }
 }

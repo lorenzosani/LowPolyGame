@@ -27,22 +27,28 @@ public class BuildingsScript : MonoBehaviour
         if (placing) {
             buildingsImages[currentBuilding].position = Input.mousePosition;
         }
-        //If a building is selected and the maouse is clicked, the building is placed
+        //If a building is selected and the mouse is clicked, the building is placed
         if (placing & Input.GetMouseButton(0)) {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit)){
                 //Check if the building is placed on an allowed area
                 if (hit.transform.gameObject.layer == 11 && Input.mousePosition.y>=buildingsMenu.GetComponent<RectTransform>().rect.height){
-                    //Check if the user has enough resources
-                    if(buyBuilding(currentBuilding)){
-                        // If yes, a new building is instantiated
-                        newBuilding(currentBuilding, hit.point);
-                        soundFx.BuildingSound();
-                    }else{
-                        // Otherwise, a message is shown to the user
+                    // Check if the new building overlaps with existing objects
+                    Collider[] hitColliders = Physics.OverlapBox(hit.point, buildingsPrefabs[currentBuilding].transform.localScale/2, buildingsPrefabs[currentBuilding].transform.rotation);
+                    if (hitColliders.Length > 4){
                         placing = false;
-                        GetComponent<ControllerScript>().showDialog("Oops! You don't have enough resources for this building");
+                        GetComponent<ControllerScript>().showDialog("Oops! You can't place a building on top of another object");
+                    }else{
+                        //Check if the user has enough resources
+                        if(buyBuilding(currentBuilding)){
+                            newBuilding(currentBuilding, hit.point);
+                            soundFx.BuildingSound();
+                        }else{
+                            // Otherwise, a message is shown to the user
+                            placing = false;
+                            GetComponent<ControllerScript>().showDialog("Oops! You don't have enough resources for this building");
+                        }
                     }
                 } else {
                     placing = false;

@@ -25,21 +25,25 @@ public class btnFX : MonoBehaviour
         fxSource.Play();
     }
 
+    // This plays a sound when a building is placed
     public void BuildingSound(){
         fxSource.clip = buildingFx;
         fxSource.Play();
     }
 
+    // This plays a sound when a resoruce is collected
     public void ResourcesSound(){
         fxSource.clip = resourcesFx;
         fxSource.Play();
     }
 
+    // This plays a sound when a fight is won
     public void VictorySound(){
         fxSource.clip = victoryFx;
         fxSource.Play();
     }
 
+    // This plays a sound when a ship is attacking the village
     public void AttackSound(){
         fxSource.clip = attackFx;
         fxSource.Play();

@@ -11,6 +11,7 @@ public class GameData {
     internal int[] buildingsType;
     internal float[,] buildingsPosition;
 
+    // This class holds all the data that will be stored permanently when the game is saved
     public GameData(ControllerScript controller) {
         villageStrength = controller.villageStrength;
         storageSpace = controller.storageLimit;

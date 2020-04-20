@@ -60,6 +60,7 @@ public class getResource : MonoBehaviour
         }
     }
     
+    // This shows a progress bar on top of a resource that is being collected
     private void startProgressBar(RaycastHit hit, int value){
         currentHit = hit;
         Vector3 progressPos = hit.point;
@@ -74,6 +75,7 @@ public class getResource : MonoBehaviour
         soundFx.ResourcesSound();
     }
 
+    // This adds a resource to those owned by the player
     private void addResource(){
         if (currentHit.transform.gameObject.layer == 8){                        
             controller.GetComponent<ControllerScript>().AddRock(resourceValue);

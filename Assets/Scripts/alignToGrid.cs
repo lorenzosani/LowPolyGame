@@ -10,6 +10,7 @@ public class alignToGrid : MonoBehaviour
 
     void LateUpdate()
     {
+        // This allows resources to be aligned in a grid an not overlap
         if (this.transform.position != lastPos)
         {
             truePos.x = (float)Math.Round(this.transform.position.x);

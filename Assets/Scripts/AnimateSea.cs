@@ -17,6 +17,8 @@ public class AnimateSea : MonoBehaviour
         direction = true;
     }
 
+    // This allows the sea to go up and down
+    // The whole sea level is moved on its vertical axis and it gives the impression of waves on the shore
     void LateUpdate() {
         if(transform.position.y > -1.06 | transform.position.y < -1.14){
             direction = !direction;

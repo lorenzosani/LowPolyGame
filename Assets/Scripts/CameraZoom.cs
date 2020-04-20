@@ -15,8 +15,9 @@ public class CameraZoom : MonoBehaviour
         targetZoom = cam.orthographicSize;
     }
 
+    // This allows the user to zoom in/out with the mouse wheel
     void Update() {
-        // Get users' scroll input
+        // Get user scroll input
         scrollData = Input.GetAxis("Mouse ScrollWheel");
 
         // Calculate the desired zoom

@@ -16,6 +16,7 @@ public class WanderingAI : MonoBehaviour {
     private float timer;
     private Vector3 lastPosition;
  
+    // This allows the villagers to wander around the island
     void Start() {
         lastPosition = transform.position;
         agent = GetComponent<NavMeshAgent> ();
@@ -38,7 +39,7 @@ public class WanderingAI : MonoBehaviour {
             character.Move(Vector3.zero, false, false);
         }
     }
- 
+    
     public static Vector3 RandomNavSphere(Vector3 origin, float dist, int layermask) {
         Vector3 randDirection = Random.insideUnitSphere * dist;
         randDirection += origin;

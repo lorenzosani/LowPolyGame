@@ -7,9 +7,8 @@ public class GrassScript : MonoBehaviour
     public int amountOfGrass;
     public GameObject[] grassPrefabs;
     public GameObject terrainObject;
-    
 
-    // Here I add grass objects to the scene
+    // This randomly spawns grass and small plants that can't be collected but are part of the environment
     void Start()
     {
         RaycastHit hit;

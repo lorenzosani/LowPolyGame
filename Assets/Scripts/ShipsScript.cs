@@ -27,6 +27,7 @@ public class ShipsScript : MonoBehaviour
 
     void FixedUpdate()
     {   
+        // This creates the animation of a ship navigating away from the island
         if (navigatingAway) {
             Vector3 target = new Vector3(-160.0f, ship.transform.position.y, -30.0f);
             Vector3 direction = target-ship.transform.position;
@@ -44,6 +45,7 @@ public class ShipsScript : MonoBehaviour
 
     void LateUpdate()
     {
+        // This allows the user to click on an attacking ship
         if( underAttack & Input.GetMouseButton(0)){
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
@@ -59,6 +61,7 @@ public class ShipsScript : MonoBehaviour
         }
     }
 
+    // This generates a new attack by a ship to the village
     private void generateAttack()
     {
         // Generate random attacking ship among available ships
@@ -81,6 +84,7 @@ public class ShipsScript : MonoBehaviour
         underAttack = true;
     }
 
+    // This is called by the user when they choose to either fight or surrender to an enemy
     public void fightOrSurrender(string userChoice) {
         attackChoiceDialog.gameObject.SetActive(false);
         GetComponent<ControllerScript>().showDialog(generateAttackOutcome(userChoice));
@@ -124,6 +128,7 @@ public class ShipsScript : MonoBehaviour
         return string.Format("You surrendered and lost {0} rock, {1} wood, {2} gold.", rockStolen, woodStolen, goldStolen);
     }
 
+    // This moves a ship away from the island after an attack is finished
     public void moveShipAway() {
         navigatingAway = true;
 
