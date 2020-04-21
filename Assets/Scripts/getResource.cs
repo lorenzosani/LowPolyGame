@@ -66,7 +66,7 @@ public class getResource : MonoBehaviour
         Vector3 progressPos = hit.point;
         progressPos.y = 3.0f;
 
-        duration = value*5.0f;
+        duration = value*1.0f;
         startTime = Time.time;
 
         progressBack = (GameObject) Instantiate(progressBackPrefab, progressPos, progressBackPrefab.transform.rotation);

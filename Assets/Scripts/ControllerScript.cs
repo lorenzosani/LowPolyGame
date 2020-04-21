@@ -15,6 +15,7 @@ public class ControllerScript : MonoBehaviour
     public Text goldValue;
     public Text villageStrengthValue;
     public Text storageSpaceValue;
+    public InfoScript info;
     
     private int rockOwned;
     private int woodOwned;
@@ -31,6 +32,7 @@ public class ControllerScript : MonoBehaviour
         if (PlayerPrefs.GetInt("LoadScene", 0)>0) {
             // Called if the user wants to load a game
             LoadGame();
+            info.hideInfoScreen();
         } else {
             // Called if the user starts a new game from scratch
             rockOwned = 0;
@@ -38,6 +40,7 @@ public class ControllerScript : MonoBehaviour
             goldOwned = 0;
             villageStrength = 0;
             GetComponent<BuildingsScript>().newBuilding(0, new Vector3(-22.0f, 0.0f, 8.0f));
+            info.showInfoScreen();
         }
     }
 
@@ -46,7 +49,7 @@ public class ControllerScript : MonoBehaviour
         woodValue.text = woodOwned.ToString();
         goldValue.text = goldOwned.ToString();
         villageStrengthValue.text = villageStrength.ToString();
-        storageSpaceValue.text = storageLimit.ToString();
+        storageSpaceValue.text = getStorageLeft().ToString();
     }
 
     // This serializes and saves the game to local storage

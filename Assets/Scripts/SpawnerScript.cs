@@ -48,6 +48,7 @@ public class SpawnerScript : MonoBehaviour
     {
         yield return new WaitForSeconds(startWait);
 
+        // Pick a random type of resource to spawn (among trees, rocks and gold)
         while (!stop) {
             GameObject[] resources = new GameObject[0];
             int resType = Random.Range(8,11);
@@ -59,14 +60,16 @@ public class SpawnerScript : MonoBehaviour
                 case 10: resources = goldStones;
                     break;
             }
+
+            // Pick a random resource prefab of that type
             randResources = Random.Range(0, resources.Length);
             Vector3 spawnPos;
 
-            // Check if spawned resource overlaps with other objects
+            // Generate a random position until the spawned resource doesn't overlap with other objects
             do{
                 spawnPos = new Vector3(Random.Range(-26, 33), 0, Random.Range(-22, 30));
                 hitColliders = Physics.OverlapBox(spawnPos, resources[randResources].transform.localScale/2, resources[randResources].transform.rotation, islandLayer);
-            } while (hitColliders.Length > 3); // This is three because the terrain is made by three different colliders
+            } while (hitColliders.Length > 3); 
 
             // Instantiate a new resource in the scene
             GameObject newResource = Instantiate(resources[randResources], spawnPos + transform.TransformPoint(0, 0, 0), resources[randResources].transform.rotation);
